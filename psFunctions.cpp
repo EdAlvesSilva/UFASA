@@ -32,17 +32,12 @@ int linspace(double begin,double end, double points,double frequencies[MAX_FREQU
 int makeFrequenciesList(double begin, double end, double points, double frequencies[MAX_FREQUENCIES + 1], double *number_of_frequencies, int type) {
     (*number_of_frequencies) = 0;
     if (type == LINEAR) {
-        cout << "HEY LINEAR" << endl;
-        cin.get();
-        cout << "begin : " << begin << " end : "<< end << endl;
         linspace(begin,end,points,frequencies);
         (*number_of_frequencies) = points;
         return 0;
     }
 
     if (type == LOG_DEC) {
-        cout << "HEY DEC" << endl;
-        cin.get();
         int i = 0;
         if (log10(end/begin) <= 1) {
             linspace(begin, end, points, frequencies);
@@ -60,7 +55,6 @@ int makeFrequenciesList(double begin, double end, double points, double frequenc
             cin.get();
 
             while (i <= (log10(end/begin) - 1)) {
-                cout << "Fazendo de " << pow(10,(i+s-1)) << " ate : " << pow(10,i+s) << endl;
                 linspace(pow(10, (i + s - 1)), pow(10, i + s), points, frequencies, (int)(i * points));
                 (*number_of_frequencies) += points;
                 i++;
@@ -75,8 +69,6 @@ int makeFrequenciesList(double begin, double end, double points, double frequenc
 
     if (type == LOG_OCT) {
         int i = 0;
-        cout << "HEY OCTAVE" << endl;
-        cin.get();
         if((log(end/begin)/log(2))<= 1) {
             linspace(begin,end,points,frequencies);
             (*number_of_frequencies) = points;
@@ -136,9 +128,6 @@ int makeNetlistPS(Element netlist[MAX_ELEM], Element netlistPS[MAX_ELEM], int ne
             vn = solution[netlist[i].getA()] - solution[netlist[i].getB()];
             if (vn>V_MAX) vn = V_MAX;
             DiodeResistanceandCapacitance(vn,c0,c1, is, vt, &go, &co);
-            cout << "Parametros do diodo" << endl;
-            cout << co << endl;
-            cout << (1/go) << endl;
             char new_Rname[MAX_NAME];
             char new_Cname[MAX_NAME];
             strcpy(new_Rname, nameType);
@@ -266,11 +255,6 @@ int makeNetlistPS(Element netlist[MAX_ELEM], Element netlistPS[MAX_ELEM], int ne
                 i2=isr*(exp((vbc)/vtr)-1);
 
 
-                //i1 = isd*(exp(vbc/vtr) - 1);
-                cout << "sprint da madrugada" << endl;
-                cout << i1 << endl;
-                //i2 = alpha_d*(isr*(exp(vbe/vtd)));
-                cout << i2 << endl<<endl;
             }
 
             netlistPS[iPS].setName(new_RCename);
@@ -307,10 +291,6 @@ void SetMNAPS(int nv,int ne, std::complex<double> Yn[MAX_NODES + 1][MAX_NODES + 
         type = nameType[0];
         if (type == 'C'){
             g = (netlist[i].getValue() * 2 * PI) * frequency;
-            cout << frequency << "< - Frequencia" << endl;
-            cout << "Impedancia da Capacitancia :" << g << endl;
-            cout << netlist[i].getValue() << endl;
-            cout << netlist[i].getName() << endl;
             Yn[netlist[i].getA()][netlist[i].getA()] += std::complex<double>(0,g);
             Yn[netlist[i].getB()][netlist[i].getB()] += std::complex<double>(0,g);
             Yn[netlist[i].getA()][netlist[i].getB()] -= std::complex<double>(0,g);
@@ -318,8 +298,6 @@ void SetMNAPS(int nv,int ne, std::complex<double> Yn[MAX_NODES + 1][MAX_NODES + 
         }
         if (type == 'L'){
             g = -double(1)/((netlist[i].getValue())*PI*2*frequency);
-            cout << frequency << "< - Frequencia" << endl;
-            cout << "Impedancia da Indutancia :" << g << endl;
             Yn[netlist[i].getA()][netlist[i].getA()] += std::complex<double>(0,g);
             Yn[netlist[i].getB()][netlist[i].getB()] += std::complex<double>(0,g);
             Yn[netlist[i].getA()][netlist[i].getB()] -= std::complex<double>(0,g);
@@ -349,8 +327,6 @@ void SetMNAPS(int nv,int ne, std::complex<double> Yn[MAX_NODES + 1][MAX_NODES + 
             Source* source;
             source = netlist[i].getSourceElement();
             g = (*source).getModule();
-            cout << "module : " << (*source).getModule() << endl;
-            cout << "g : " << g << endl;
             l = (*source).getPhase();
             temp = std::complex<double>(g*cos(l),g*sin(l));
             Yn[netlist[i].getA()][netlist[i].getX()] += 1;
